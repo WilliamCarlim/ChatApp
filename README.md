@@ -40,10 +40,8 @@ Um aplicativo de chat em tempo real desenvolvido com React e Supabase, oferecend
 
 - **Interface**
   - Design responsivo
-  - Modo claro/escuro
-  - Preview de mídia
+  - Preview de imagem
   - Emojis
-  - Indicadores de digitação
 
 ## 🛠️ Tecnologias Principais
 
@@ -65,7 +63,7 @@ Um aplicativo de chat em tempo real desenvolvido com React e Supabase, oferecend
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/chatapp.git
+git clone https://github.com/dimitriteixeira/ChatApp.git
 ```
 
 2. Instale as dependências:
