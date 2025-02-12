@@ -107,9 +107,36 @@ Para configurar o banco de dados, utilize o arquivo `schema.sql` fornecido.
 ## 🔧 Configuração do Supabase
 
 1. Crie um projeto no [Supabase](https://supabase.com)
+
 2. Execute o `schema.sql` no SQL Editor
-3. Configure as políticas de segurança conforme necessário
+
+3. Configure os buckets de storage:
+
+   a. Acesse "Storage" no menu lateral
+
+   b. Crie os seguintes buckets:
+
+   - `avatars`
+   - `mensagens-imagens`
+   - `mensagens-videos`
+   - `mensagens-audios`
+   - `mensagens-documentos`
+
+   c. Execute o arquivo `buckets.sql` no SQL Editor para configurar automaticamente as políticas de segurança dos buckets
+
+   > Nota: O arquivo `buckets.sql` já contém todas as políticas necessárias para:
+   >
+   > - Controle de acesso aos arquivos
+   > - Permissões de upload para usuários autenticados
+   > - Permissões de deleção apenas para o remetente original
+   > - Políticas específicas para cada tipo de mídia (avatar, imagem, áudio, vídeo, documento)
+
 4. Copie as credenciais (URL e Anon Key) para o arquivo `.env`
+
+5. Verifique as políticas de segurança RLS (Row Level Security):
+   - Acesse "Authentication > Policies"
+   - Confirme se as políticas foram criadas corretamente pelo schema.sql
+   - Se necessário, adicione manualmente as políticas faltantes
 
 ## 📝 Variáveis de Ambiente
 

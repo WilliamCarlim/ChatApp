@@ -57,8 +57,8 @@ SET default_table_access_method = "heap";
 
 CREATE TABLE IF NOT EXISTS "public"."msg_chat" (
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
-    "remetente_id" "uuid",
-    "destinatario_id" "uuid",
+    "remetente_id" "uuid" REFERENCES "public"."usuarios"("id"),
+    "destinatario_id" "uuid" REFERENCES "public"."usuarios"("id"),
     "texto" "text",
     "tipo" "text" DEFAULT 'texto'::"text",
     "created_at" timestamp with time zone DEFAULT "timezone"('utc'::"text", "now"()),
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS "public"."msg_chat" (
 ALTER TABLE "public"."msg_chat" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."usuarios" (
-    "id" "uuid" NOT NULL,
-    "email" "text" NOT NULL,
+    "id" "uuid" NOT NULL REFERENCES "auth"."users"("id"),
+    "email" "text" NOT NULL UNIQUE,
     "nome" "text" NOT NULL,
     "avatar_url" "text",
     "status" "text" DEFAULT 'offline'::"text",
@@ -97,9 +97,11 @@ ALTER TABLE "public"."usuarios" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."usuarios_bloqueados" (
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
-    "usuario_id" "uuid" NOT NULL,
-    "bloqueado_id" "uuid" NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "timezone"('utc'::"text", "now"()) NOT NULL
+    "usuario_id" "uuid" REFERENCES "public"."usuarios"("id"),
+    "bloqueado_id" "uuid" REFERENCES "public"."usuarios"("id"),
+    "created_at" timestamp with time zone DEFAULT "timezone"('utc'::"text", "now"()) NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE("usuario_id", "bloqueado_id")
 );
 
 ALTER TABLE "public"."usuarios_bloqueados" OWNER TO "postgres";
