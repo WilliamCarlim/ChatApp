@@ -60,13 +60,13 @@ Um aplicativo de chat em tempo real desenvolvido com React e Supabase, oferecend
 
 ## 📦 Instalação
 
-1. Clone o repositório:
+1. Clone o repositório usando terminal de sua preferência:
 
 ```bash
 git clone https://github.com/dimitriteixeira/ChatApp.git
 ```
 
-2. Instale as dependências:
+2. Acesse a pasta do projeto clonado e instale as dependências:
 
 ```bash
 npm install
@@ -76,52 +76,68 @@ npm install
 
 1. Crie um projeto no [Supabase](https://supabase.com)
 
+   - Para isso você precisará criar uma conta ou fazer login
+   - Crie uma nova organização e um projeto novo
+
 2. Configure o banco de dados:
 
    - Acesse "SQL Editor" no menu lateral
-   - Execute primeiro o arquivo `tabelas.sql` para criar as tabelas e políticas de segurança
+   - Copie o conteúdo do arquivo `tabelas.sql` e cole no SQL Editor
+   - Clique em "Run" para criar as tabelas e políticas de segurança
 
 3. Configure os buckets de storage:
 
    - Acesse "Storage" no menu lateral
-   - Crie os seguintes buckets:
+   - Crie os seguintes buckets manualmente clicando no botão "New Bucket". Serão os seguintes buckets (todos públicos):
+
      - `avatars`
      - `mensagens-imagens`
      - `mensagens-videos`
      - `mensagens-audio`
      - `mensagens-documentos`
 
-   > Nota: O arquivo `buckets.sql` já configurou automaticamente:
-   >
-   > - Controle de acesso aos arquivos
-   > - Permissões de upload para usuários autenticados
-   > - Permissões de deleção apenas para o remetente original
-   > - Políticas específicas para cada tipo de mídia
+   - Depois de criado os buckets vá novamente em "SQL Editor", copie e cole o conteúdo do arquivo `buckets.sql` para configurar as politicas do storage e clique em "Run".
 
-- Vá novamente em SQL Editor copie e cole o conteúdo do arquivo `buckets.sql` para configurar as politicas do storage.
+> Nota: O arquivo `buckets.sql` já configura automaticamente:
+>
+> - Controle de acesso aos arquivos
+> - Permissões de upload para usuários autenticados
+> - Permissões de deleção apenas para o remetente original
+> - Políticas específicas para cada tipo de mídia
 
 4. Configure as credenciais:
 
    - No topo do projeto, clique em "Connect"
    - Na seção "App Frameworks", selecione em framework "React" e em "using" selecione Vite.
    - Copie a URL e a anon key
-   - Cole no arquivo `.env.example` e renomeie para `.env`:
 
    ```bash
    VITE_SUPABASE_URL=sua_url_supabase
    VITE_SUPABASE_ANON_KEY=sua_chave_anonima
    ```
 
-   > Opcional: Você pode configurar o formato de configuração de email de confirmação da hora do cadastro. Para isso faça o seguinte caminho :
-   >
-   > - Authentication > Emails
-   > - Troque o conteúdo de "Confirm signup" para o desejado
+   - Cole no arquivo `.env.example` e renomeie para `.env`:
 
-5. Inicie o projeto:
+## ✉️ Configuração do Email de Confirmação de Cadastro
+
+Opcional: Você pode configurar o formato do email para português. Este email é enviado no momento do cadastro do chat. Para isso faça o seguinte caminho :
+
+- Authentication > Emails
+- Troque o titulo e o conteudo do email de confirmação de cadastro para o desejado.
+
+## 🚀 Hora de testar o projeto!!
+
+Dentro do projeto rode no terminal o seguinte comando:
 
 ```bash
 npm run dev
 ```
+
+O projeto estará disponível no seu navegador na porta indicada no terminal.
+
+Para testar o projeto cadastre duas contas diferentes. Depois abra cada conta em um navegador diferente. Se fizer no mesmo navegador vai bugar a aplicação por causa da autenticação.
+
+Brinque com o projeto. Envie mensagens. Envie imagens. Envie vídeos. Envie áudios. Envie documentos. Veja se está tudo funcionando.
 
 ## 🗄️ Estrutura do Back-end
 
