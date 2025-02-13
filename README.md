@@ -72,21 +72,50 @@ git clone https://github.com/dimitriteixeira/ChatApp.git
 npm install
 ```
 
-3. Configure as variáveis de ambiente:
+## 🔧 Configuração do Supabase
 
-   - Renomeie o arquivo `.env.example` para `.env`
-   - Preencha com suas credenciais do Supabase:
+1. Crie um projeto no [Supabase](https://supabase.com)
+
+2. Configure o banco de dados:
+
+   - Acesse "SQL Editor" no menu lateral
+   - Execute primeiro o arquivo `tabelas.sql` para criar as tabelas e políticas de segurança
+
+3. Configure os buckets de storage:
+
+   - Acesse "Storage" no menu lateral
+   - Crie os seguintes buckets:
+     - `avatars`
+     - `mensagens-imagens`
+     - `mensagens-videos`
+     - `mensagens-audio`
+     - `mensagens-documentos`
+
+   > Nota: O arquivo `buckets.sql` já configurou automaticamente:
+   >
+   > - Controle de acesso aos arquivos
+   > - Permissões de upload para usuários autenticados
+   > - Permissões de deleção apenas para o remetente original
+   > - Políticas específicas para cada tipo de mídia
+
+- Vá novamente em SQL Editor copie e cole o conteúdo do arquivo `buckets.sql` para configurar as politicas do storage.
+
+4. Configure as credenciais:
+
+   - No topo do projeto, clique em "Connect"
+   - Na seção "App Frameworks", selecione em framework "React" e em "using" selecione Vite.
+   - Copie a URL e a anon key
+   - Cole no arquivo `.env.example` e renomeie para `.env`:
 
    ```bash
    VITE_SUPABASE_URL=sua_url_supabase
    VITE_SUPABASE_ANON_KEY=sua_chave_anonima
    ```
 
-4. Configure o banco de dados:
-
-   - Acesse seu projeto no Supabase
-   - Vá para SQL Editor
-   - Cole e execute o conteúdo do arquivo `schema.sql`
+   > Opcional: Você pode configurar o formato de configuração de email de confirmação da hora do cadastro. Para isso faça o seguinte caminho :
+   >
+   > - Authentication > Emails
+   > - Troque o conteúdo de "Confirm signup" para o desejado
 
 5. Inicie o projeto:
 
@@ -94,7 +123,7 @@ npm install
 npm run dev
 ```
 
-## 🗄️ Estrutura do Banco de Dados
+## 🗄️ Estrutura do Back-end
 
 O projeto utiliza as seguintes tabelas principais:
 
@@ -102,50 +131,13 @@ O projeto utiliza as seguintes tabelas principais:
 - `msg_chat`: Mensagens do chat
 - `usuarios_bloqueados`: Registro de usuários bloqueados
 
-Para configurar o banco de dados, utilize o arquivo `schema.sql` fornecido.
+Armazenamos mídias (imagens, vídeos, áudios, documentos) em buckets do Supabase Storage (limite de 1GB no plano gratuito):
 
-## 🔧 Configuração do Supabase
-
-1. Crie um projeto no [Supabase](https://supabase.com)
-
-2. Execute o `schema.sql` no SQL Editor
-
-3. Configure os buckets de storage:
-
-   a. Acesse "Storage" no menu lateral
-
-   b. Crie os seguintes buckets:
-
-   - `avatars`
-   - `mensagens-imagens`
-   - `mensagens-videos`
-   - `mensagens-audios`
-   - `mensagens-documentos`
-
-   c. Execute o arquivo `buckets.sql` no SQL Editor para configurar automaticamente as políticas de segurança dos buckets
-
-   > Nota: O arquivo `buckets.sql` já contém todas as políticas necessárias para:
-   >
-   > - Controle de acesso aos arquivos
-   > - Permissões de upload para usuários autenticados
-   > - Permissões de deleção apenas para o remetente original
-   > - Políticas específicas para cada tipo de mídia (avatar, imagem, áudio, vídeo, documento)
-
-4. Copie as credenciais (URL e Anon Key) para o arquivo `.env`
-
-5. Verifique as políticas de segurança RLS (Row Level Security):
-   - Acesse "Authentication > Policies"
-   - Confirme se as políticas foram criadas corretamente pelo schema.sql
-   - Se necessário, adicione manualmente as políticas faltantes
-
-## 📝 Variáveis de Ambiente
-
-Copie o arquivo `.env.example` para `.env` e configure as seguintes variáveis:
-
-```bash
-VITE_SUPABASE_URL=sua_url_supabase
-VITE_SUPABASE_ANON_KEY=sua_chave_anonima
-```
+- `avatars`
+- `mensagens-imagens`
+- `mensagens-videos`
+- `mensagens-audio`
+- `mensagens-documentos`
 
 ## 👤 Autor
 

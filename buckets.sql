@@ -41,16 +41,26 @@ CREATE POLICY "Permitir acesso público aos áudios" ON storage.objects FOR SELE
   bucket_id = 'mensagens-audio'
 );
 
-   CREATE POLICY "Permitir upload de imagens" ON storage.objects
+CREATE POLICY "Permitir deleção de áudios pelo remetente" ON storage.objects
+FOR DELETE USING (
+  bucket_id = 'mensagens-audio' AND
+  EXISTS (
+    SELECT 1 FROM msg_chat m
+    WHERE m.audio_url LIKE '%' || name AND
+    m.remetente_id = auth.uid()
+  )
+);
+
+CREATE POLICY "Permitir upload de imagens" ON storage.objects
    FOR INSERT WITH CHECK (
      bucket_id = 'mensagens-imagens' AND
      auth.role() = 'authenticated'
-   );
+);
 
-   CREATE POLICY "Permitir acesso público às imagens" ON storage.objects
+CREATE POLICY "Permitir acesso público às imagens" ON storage.objects
    FOR SELECT USING (
      bucket_id = 'mensagens-imagens'
-   );
+);
 
 CREATE POLICY "Permitir deleção de imagens pelo remetente" ON storage.objects
 FOR DELETE USING (
@@ -58,16 +68,6 @@ FOR DELETE USING (
   EXISTS (
     SELECT 1 FROM msg_chat m
     WHERE m.imagem_url LIKE '%' || name AND
-    m.remetente_id = auth.uid()
-  )
-);
-
-CREATE POLICY "Permitir deleção de áudios pelo remetente" ON storage.objects
-FOR DELETE USING (
-  bucket_id = 'mensagens-audio' AND
-  EXISTS (
-    SELECT 1 FROM msg_chat m
-    WHERE m.audio_url LIKE '%' || name AND
     m.remetente_id = auth.uid()
   )
 );
