@@ -356,46 +356,31 @@ function ChatContentInner({ onVoltar, conversa }: { onVoltar?: () => void, conve
     };
   }, [conversa]);
 
+  const scrollToBottom = () => {
+    const chatContainer = document.querySelector('.chat-messages');
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  };
+
   useEffect(() => {
-    // Solicitar permissão para notificações assim que o componente montar
-    notificacoesService.solicitarPermissao().then(permitido => {
-      console.log('[ChatContent] Permissão para notificações:', permitido);
-    });
-
-    if (!conversa?.id || !usuarioAtual) return;
-
-    const subscription = supabase
-      .channel(`msg_chat:remetente_id=eq.${conversa.id},destinatario_id=eq.${usuarioAtual}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'msg_chat',
-          filter: `remetente_id=eq.${conversa.id},destinatario_id=eq.${usuarioAtual}`
-        },
-        async (payload) => {
-          const novaMensagem = payload.new as Mensagem;
-          console.log('[ChatContent] Nova mensagem recebida:', novaMensagem);
-          
-          // Verificar se a janela está em foco
-          const isWindowFocused = document.hasFocus();
-          console.log('[ChatContent] Janela em foco:', isWindowFocused);
-          
-          // Se a janela não estiver em foco, mostrar notificação
-          if (!isWindowFocused) {
-            console.log('[ChatContent] Tentando mostrar notificação...');
-            const notificacaoEnviada = await notificacoesService.notificarNovaMensagem(
-              conversa.nome,
-              novaMensagem.texto
-            );
-            console.log('[ChatContent] Notificação enviada:', notificacaoEnviada);
-          }
-
-          setMensagens(prev => [...prev, novaMensagem]);
-          scrollToBottom();
+    const subscription = eventosService
+      .inscreverNovasMensagens(conversa?.id || '', async (novaMensagem) => {
+        if (
+          novaMensagem.remetente_id !== usuarioAtual &&
+          !document.hidden &&
+          Notification.permission === 'granted'
+        ) {
+          const notificacaoEnviada = await notificacoesService.enviarNotificacao(
+            'Nova mensagem',
+            novaMensagem.texto
+          );
+          console.log('[ChatContent] Notificação enviada:', notificacaoEnviada);
         }
-      )
+
+        setMensagens(prev => [...prev, novaMensagem]);
+        scrollToBottom();
+      })
       .subscribe();
 
     return () => {
@@ -613,12 +598,6 @@ function ChatContentInner({ onVoltar, conversa }: { onVoltar?: () => void, conve
         text: 'Não foi possível desbloquear o contato. Tente novamente mais tarde.',
         confirmButtonColor: '#00a884'
       });
-    }
-  };
-
-  const scrollToBottom = () => {
-    if (mensagensContainerRef.current) {
-      mensagensContainerRef.current.scrollTop = mensagensContainerRef.current.scrollHeight;
     }
   };
 

@@ -105,7 +105,7 @@ export function InfoUsuario({
 
       if (newName) {
         const validation = validateName(newName);
-        if (validation.isValid && validation.validName !== nome) {
+        if (validation.isValid && validation.validName !== nome && userId) {
           const { user, error } = await authService.updateUserName(userId, validation.validName);
           
           if (error) throw error;

@@ -10,7 +10,6 @@ interface MensagemBalaoProps {
   created_at: string;
   tipo: 'texto' | 'imagem' | 'audio' | 'video' | 'documento';
   isUser: boolean;
-  reacoes?: string[];
   onEditar?: (id: string) => void;
   onDeletar?: (id: string) => void;
   termoBusca?: string;
@@ -44,7 +43,6 @@ export function MensagemBalao({
   created_at,
   tipo,
   isUser,
-  reacoes,
   onEditar,
   onDeletar,
   termoBusca,
@@ -326,14 +324,7 @@ export function MensagemBalao({
           {/* Reações e horário */}
           <div className="flex items-center justify-between mt-1">
             <div className="flex -space-x-1">
-              {reacoes?.map((reacao, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-full px-2 py-0.5 text-xs border shadow-sm flex items-center gap-1"
-                >
-                  <span>{reacao}</span>
-                </div>
-              ))}
+              {/* Reações */}
             </div>
             <p className={`text-[10px] ${isUser ? 'text-white/80' : 'text-gray-500'} ml-3`}>
               {formatarDataHora(created_at)}

@@ -54,7 +54,7 @@ export function ListaConversas({ onConversaSelect }: ListaConversasProps) {
             const conversaAtualizada = conversaExistente 
               ? {
                   ...conversaExistente,
-                  ultimaMensagem: novaConversa.deletada 
+                  ultimaMensagem: novaConversa.deletada && novaConversa.remetente_id 
                     ? (novaConversa.remetente_id === user.id ? 'Você apagou uma mensagem' : 'Uma mensagem foi apagada')
                     : novaConversa.ultimaMensagem,
                   horario: novaConversa.horario,
