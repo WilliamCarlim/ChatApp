@@ -218,7 +218,7 @@ export function ListaConversas({ onConversaSelect }: ListaConversasProps) {
         user.id,
         async () => {
           // Recarrega todas as conversas quando houver mudança em bloqueios
-          const { conversas } = await conversasService.listarConversas(user.id);
+          const { conversas } = await conversasService.buscarConversas(user.id);
           setConversas(conversas);
         }
       );

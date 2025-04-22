@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 interface IconeDocumento {
   svg: JSX.Element;
@@ -103,18 +105,6 @@ export const getIconeDocumento = (extensao: string): IconeDocumento => {
           <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                   d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-          </svg>
-        )
-      };
-
-    case 'txt':
-      return {
-        corFundo: '#F3F4F6',
-        svg: (
-          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            <text x="8" y="16" className="text-xs font-bold" fill="currentColor">TXT</text>
           </svg>
         )
       };

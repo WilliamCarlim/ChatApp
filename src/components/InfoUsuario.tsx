@@ -111,7 +111,7 @@ export function InfoUsuario({
           if (error) throw error;
 
           if (user) {
-            onNameUpdate?.(user.nome);
+            onNameUpdate?.(validation.validName);
             await Swal.fire({
               icon: 'success',
               title: 'Nome atualizado!',

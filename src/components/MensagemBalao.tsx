@@ -7,13 +7,9 @@ import { useState } from 'react';
 interface MensagemBalaoProps {
   id: string;
   texto: string;
-  horario: string;
   created_at: string;
-  remetente: string;
   tipo: 'texto' | 'imagem' | 'audio' | 'video' | 'documento';
   isUser: boolean;
-  conteudo?: string;
-  duracao?: number;
   reacoes?: string[];
   onEditar?: (id: string) => void;
   onDeletar?: (id: string) => void;
@@ -22,7 +18,6 @@ interface MensagemBalaoProps {
   indices?: [number, number][];
   nomeRemetente?: string;
   avatarUrl?: string | null;
-  updated_at?: string;
   deletada?: boolean;
   editada?: boolean;
   audio_url?: string;
@@ -46,13 +41,9 @@ function formatarDataHora(dataString: string): string {
 export function MensagemBalao({
   id,
   texto,
-  horario,
   created_at,
-  remetente,
   tipo,
   isUser,
-  conteudo,
-  duracao,
   reacoes,
   onEditar,
   onDeletar,
@@ -61,7 +52,6 @@ export function MensagemBalao({
   indices,
   nomeRemetente,
   avatarUrl,
-  updated_at,
   deletada,
   editada,
   audio_url,

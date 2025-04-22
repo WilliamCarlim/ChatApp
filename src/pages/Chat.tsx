@@ -14,6 +14,8 @@ export interface Conversa {
   online?: boolean;
   naoLidas?: number;
   pinned?: boolean;
+  deletada?: boolean;
+  remetente_id?: string;
 }
 
 export function Chat() {

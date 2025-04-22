@@ -616,6 +616,12 @@ function ChatContentInner({ onVoltar, conversa }: { onVoltar?: () => void, conve
     }
   };
 
+  const scrollToBottom = () => {
+    if (mensagensContainerRef.current) {
+      mensagensContainerRef.current.scrollTop = mensagensContainerRef.current.scrollHeight;
+    }
+  };
+
   return (
     <div className="flex flex-col h-full max-h-screen overflow-hidden">
       {/* Cabeçalho fixo */}
