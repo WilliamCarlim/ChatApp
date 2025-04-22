@@ -1,5 +1,3 @@
-import { mensagensService } from './mensagens';
-
 class NotificacoesService {
   private permissionGranted: boolean = false;
 

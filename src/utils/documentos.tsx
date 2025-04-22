@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 interface IconeDocumento {
   svg: JSX.Element;

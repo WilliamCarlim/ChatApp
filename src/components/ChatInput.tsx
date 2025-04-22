@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
-import { RecordRTCPromisesHandler } from 'recordrtc';
 import { Toast } from './Toast';
 
 interface Emoji {
