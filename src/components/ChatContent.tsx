@@ -10,6 +10,7 @@ import { bloqueiosService } from '../services/bloqueios';
 import { useAuth } from '../contexts/AuthContext';
 import { eventosService } from '../services/eventos';
 import { statusService } from '../services/status';
+import { notificacoesService } from '../services/notificacoes';
 
 interface ResultadoBusca {
   mensagemId: string;
@@ -354,6 +355,53 @@ function ChatContentInner({ onVoltar, conversa }: { onVoltar?: () => void, conve
       }
     };
   }, [conversa]);
+
+  useEffect(() => {
+    // Solicitar permissão para notificações assim que o componente montar
+    notificacoesService.solicitarPermissao().then(permitido => {
+      console.log('[ChatContent] Permissão para notificações:', permitido);
+    });
+
+    if (!conversa?.id || !usuarioAtual) return;
+
+    const subscription = supabase
+      .channel(`msg_chat:remetente_id=eq.${conversa.id},destinatario_id=eq.${usuarioAtual}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'msg_chat',
+          filter: `remetente_id=eq.${conversa.id},destinatario_id=eq.${usuarioAtual}`
+        },
+        async (payload) => {
+          const novaMensagem = payload.new as Mensagem;
+          console.log('[ChatContent] Nova mensagem recebida:', novaMensagem);
+          
+          // Verificar se a janela está em foco
+          const isWindowFocused = document.hasFocus();
+          console.log('[ChatContent] Janela em foco:', isWindowFocused);
+          
+          // Se a janela não estiver em foco, mostrar notificação
+          if (!isWindowFocused) {
+            console.log('[ChatContent] Tentando mostrar notificação...');
+            const notificacaoEnviada = await notificacoesService.notificarNovaMensagem(
+              conversa.nome,
+              novaMensagem.texto
+            );
+            console.log('[ChatContent] Notificação enviada:', notificacaoEnviada);
+          }
+
+          setMensagens(prev => [...prev, novaMensagem]);
+          scrollToBottom();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [conversa?.id, usuarioAtual]);
 
   const navegarResultado = (direcao: 'anterior' | 'proximo') => {
     if (resultadosBusca.length === 0) return;
